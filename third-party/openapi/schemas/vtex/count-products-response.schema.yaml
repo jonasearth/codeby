@@ -1,0 +1,9 @@
+title: CountProductsResponseSchema
+type: object
+description: Represent a count products response schema
+properties:
+  message:
+    type: string
+    example: Making a coffie pls wait!
+  
+  

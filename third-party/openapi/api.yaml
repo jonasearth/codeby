@@ -1,0 +1,58 @@
+openapi: 3.0.3
+info:
+  title: Third Party Vtex
+  description: |
+    # Third Party Vtex API
+
+    **Description**: Api responsible for the communication with Vtex
+
+    ## Generic errors
+
+    Every request may return one of the following errors:
+
+    ### Unprocessable Entity
+
+    Returned when the request schema is not valid.
+
+    ```json
+    {
+      "statusCode": 422,
+      "message": [
+        {
+            "target": {
+                "email": "john.doe@email.com",
+                "token": "99999"
+            },
+            "value": "99999",
+            "property": "token",
+            "children": [],
+            "constraints": {
+                "isLength": "token must be longer than or equal to 6 characters"
+            }
+        }
+      ],
+      "error": "Unprocessable Entity"
+    }
+
+  
+  version: 0.1.0
+tags:
+  - name: Vtex
+    description: Vtex basic operations
+servers:
+  - url: http://localhost:3100/
+    description: Local server
+components:
+  # Adding this only to show list of schemas at the bottom of the page.
+  # Reference schemas using their files, not this definition.
+  schemas:
+    CountProductsInputSchema:
+      $ref: ./schemas/vtex/count-products-input.schema.yaml
+    CountProductsResponseSchema:
+      $ref: ./schemas/vtex/count-products-response.schema.yaml
+
+paths:
+  /vtex/count-products:
+    $ref: './paths/vtex~1count-products/index.yaml'
+  
+  

@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  zookeeper:
+    hostname: zookeeper
+    image: 'bitnami/zookeeper:latest'
+    networks:
+      - main
+      - services
+    ports:
+      - '${ZOOKEEPER_HOST_PORT:-2181}:2181'
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    hostname: kafka
+    image: 'bitnami/kafka:latest'
+    networks:
+      - main
+      - services
+    ports:
+      - '${KAFKA_HOST_PORT:-9093}:9093'
+    restart: unless-stopped
+    volumes:
+      - kafka-data:/bitnami/kafka
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:${KAFKA_HOST_PORT:-9093}
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:${KAFKA_HOST_PORT:-9093}
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    hostname: kafka-ui
+    networks:
+      - main
+      - services
+    ports:
+      - "${KAFKA_UI_HOST_PORT:-8080}:8080"
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka-data:
+    driver: local
+
+networks:
+  main:
+    driver: bridge
+  services:
+    external: true
+    name: services

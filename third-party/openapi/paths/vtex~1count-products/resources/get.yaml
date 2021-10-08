@@ -1,0 +1,23 @@
+summary: Create a juridical person client
+operationId: CreateJuridicalPersonClient
+tags:
+  - Vtex
+parameters:
+  - in: query
+    name: email
+    required: true
+    schema:
+        $ref: ../../../schemas/vtex/count-products-input.schema.yaml
+responses:
+  201:
+    description: Requisition Acepted and working in this
+    content:
+      application/json:
+        schema:
+          $ref: ../../../schemas/vtex/count-products-response.schema.yaml
+  422:
+    description: Some of the body fields are incorrect
+    content:
+      application/json:
+        schema:
+          $ref: ../../../schemas/error/unprocessable-entity-error.schema.yaml

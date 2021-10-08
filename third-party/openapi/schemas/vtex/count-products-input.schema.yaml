@@ -1,0 +1,10 @@
+title: CountProductsInputSchema
+type: object
+description: Represent a Count Products Input Schema
+properties:
+  email:
+    type: string
+    format: email
+    example: 'jonasearth1@gmail.com'
+
+  
