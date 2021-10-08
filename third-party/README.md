@@ -1,4 +1,4 @@
-# seed
+# Third-Party
 
 ## Starting the application
 
